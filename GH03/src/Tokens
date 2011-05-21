@@ -33,6 +33,8 @@ $		TkRow		\$
 
 num		TkNum		"num"
 vec		TkVec		"vec"
+mat             Tkmat           "mat"
+var             Tkvar
 zeroes		TkZeroes	"zeroes"
 range		TkRange		"range"
 eye		TkEye		"eye"
