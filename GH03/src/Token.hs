@@ -1,4 +1,4 @@
-module Lexer (Token(..)) where
+module Token (Token(..)) where
 
 data Token =
      TkPlus |
@@ -28,6 +28,7 @@ data Token =
      TkRParen |
      TkNum |
      TkVec |
+     TkMat |
      TkZeroes | 
      TkRange |
      TkEye |

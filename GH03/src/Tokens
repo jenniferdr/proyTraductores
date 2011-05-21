@@ -24,11 +24,11 @@ $		TkRow		\$
 ,		TkComma		","
 .		TkDot		\.
 &&		TkAnd		"&&"
-||		TkOr		"||"
+||		TkOr		\|\|
 :=		TkAsig		":=" OJO
 {		TkLBrace	"{"
 }		TkRBrace	"}"
-[		TkLParen	"("
+(		TkLParen	"("
 )		TkRParen	")"
 
 num		TkNum		"num"
