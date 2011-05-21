@@ -33,7 +33,6 @@ $		TkRow		\$
 
 num		TkNum		"num"
 vec		TkVec		"vec"
-string		TkString	"string"
 zeroes		TkZeroes	"zeroes"
 range		TkRange		"range"
 eye		TkEye		"eye"
