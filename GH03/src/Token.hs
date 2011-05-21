@@ -39,6 +39,7 @@ data Token =
      TkBegin |
      TkEnd |
      TkVars |
+     TkVar |
      TkIf |
      TkThen |
      TkElse |

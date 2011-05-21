@@ -10,6 +10,7 @@ $alpha = [a-zA-Z]		-- alphabetic characters
 $graphic    = $printable # $white
 
 tokens :-
+$white+     ;
 \+	    {\s -> TkPlus}
 \-     	    {\s -> TkMinus}
 \*     	    {\s -> TkTimes}
