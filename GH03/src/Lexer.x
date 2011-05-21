@@ -39,6 +39,7 @@ tokens :-
 ")"    	    {\s -> TkRParen}
 "num"  	    {\s -> TkNum}
 "vec"  	    {\s -> TkVec}
+"mat"	    {\s -> TkMat}
 "zeroes"    {\s -> TkZeroes}
 "range"	    {\s -> TkRange}
 "eye"	    {\s -> TkEye}
