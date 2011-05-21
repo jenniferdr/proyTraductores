@@ -1,3 +1,10 @@
+{
+module Main (main) where
+
+import Lexer
+}
+
+
 %wrapper "basic"
 
 $digit = 0-9			-- digits
@@ -54,3 +61,9 @@ tokens :-
 "return"    {\s -> TkReturn}
 "true"	    {\s -> TkTrue}	
 "false"	    {\s -> TkFalse}
+
+{
+main = do
+  s <- getContents
+  print (alexScanTokens s)
+}

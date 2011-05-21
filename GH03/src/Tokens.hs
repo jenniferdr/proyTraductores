@@ -1,3 +1,5 @@
+module Lexer (Token(..)) where
+
 data Token =
      TkPlus |
      TkMinus |
@@ -49,7 +51,3 @@ data Token =
      TkTrue |
      TkFalse
      deriving (Eq,Show)
-
-main = do
-  s <- getContents
-  print (alexScanTokens s)
