@@ -1,9 +1,7 @@
 {
 module Main (main) where
-
-import Lexer
+import Token
 }
-
 
 %wrapper "basic"
 
@@ -38,7 +36,7 @@ tokens :-
 "("    	    {\s -> TkLParen}
 ")"    	    {\s -> TkRParen}
 "num"  	    {\s -> TkNum}
-"vec"  	    {\s -> TkVec}
+"vec" 	    {\s -> TkVec }
 "mat"	    {\s -> TkMat}
 "zeroes"    {\s -> TkZeroes}
 "range"	    {\s -> TkRange}
