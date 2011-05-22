@@ -1,5 +1,5 @@
 {
-module Main (main) where
+module Main () where
 import Token
 import System.IO
 import System.Environment
@@ -78,18 +78,19 @@ $white+     ;
 
 {
 main = do
+    x <- getArgs
+    r <- checkArgs x
+    printList r
 
-  (x:[xs]) <- getArgs
-  if x =="-e"
-     then do
-        let r = alexScanTokens_2 xs
-        printList r
-     else do
-       fp <- openFile x ReadMode
-       content <- hGetContents fp
-       let r = alexScanTokens_2 content
-       printList r
-       hClose fp
+checkArgs:: [String] -> IO (([Token],[TkError]))
+checkArgs x
+   |length x==2 && (head x)=="-e" = do return(alexScanTokens_2 (last x))
+   |length x==1 = do 
+           fp <- openFile (head x) ReadMode
+           content <- hGetContents fp
+           return(alexScanTokens_2 content)
+   |otherwise= "Numero de argumentos invalido"        
+
 
 type TkError = (Char,Posicion,Posicion)
 
