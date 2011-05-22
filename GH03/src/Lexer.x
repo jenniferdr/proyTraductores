@@ -82,13 +82,13 @@ main = do
   (x:[xs]) <- getArgs
   if x =="-e"
      then do
-        let r = alexScanTokens xs
+        let r = alexScanTokens_2 xs
         printToken r
      else do
        fp <- openFile x ReadMode
        content <- hGetContents fp
-       let r = alexScanTokens content
-       printToken r
+       let r = alexScanTokens_2 content
+       printList r
        hClose fp
 
 type TkError = (Char,Posicion,Posicion)
