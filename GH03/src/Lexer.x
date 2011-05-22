@@ -94,19 +94,25 @@ $white+     ;
   Si el flag -e esta ausente entonces se estaria analizando el contenido del archivo ingresado.
 -}
 main = do
+    x <- getArgs
+    r <- checkArgs x
+    printList r
 
-  (x:[xs]) <- getArgs
+{-|
+  @checkArgs@ recibe la lista de argumentos tipeados por consola
+  Devuelve una tupla de long 2 con una lista de tokens encontrados
+  y una lista de TkError con caracteres no reconocidos
+-}
 
-  if x =="-e"
-     then do
-        let r = alexScanTokens_2 xs
-        printList r
-     else do
-       fp <- openFile x ReadMode
-       content <- hGetContents fp
-       let r = alexScanTokens_2 content
-       printList r
-       hClose fp
+checkArgs:: [String] -> IO (([Token],[TkError]))
+checkArgs x
+   |length x==2 && (head x)=="-e" = do return(alexScanTokens_2 (last x))
+   |length x==1 = do 
+           fp <- openFile (head x) ReadMode
+           content <- hGetContents fp
+           return(alexScanTokens_2 content)
+   |otherwise= error "Numero de argumentos invalido"        
+
 
 {-| 
   @TkError@ corresponde a una tripleta estructurada por: 
