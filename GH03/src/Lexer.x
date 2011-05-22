@@ -78,12 +78,18 @@ $white+     ;
 
 {
 main = do
-  (x:xs) <- getArgs
-  fp <- openFile x ReadMode
-  content <- hGetContents fp
-  let r = alexScanTokens_2 content
-  printList r
-  hClose fp
+
+  (x:[xs]) <- getArgs
+  if x =="-e"
+     then do
+        let r = alexScanTokens xs
+        printToken r
+     else do
+       fp <- openFile x ReadMode
+       content <- hGetContents fp
+       let r = alexScanTokens content
+       printToken r
+       hClose fp
 
 type TkError = (Char,Posicion,Posicion)
 
