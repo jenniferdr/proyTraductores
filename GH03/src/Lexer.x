@@ -1,5 +1,13 @@
 {
-module Main (main) where
+{- 
+ /Analizador Lexicografico del Lenguaje Vectorinox/
+ Grupo H03
+ Autores: Hancel Gonzalez   07-40983
+          Jennifer Dos Reis 08-10323
+-}
+
+-- |Implementacion de los metodos usados para el analisis lexicografico
+module Main where
 import Token
 import System.IO
 import System.Environment
@@ -10,9 +18,11 @@ import System.Environment
 %wrapper "posn"
 
 
-$digit = 0-9			-- digits
-$alpha = [a-zA-Z]		-- alphabetic characters
+$digit = 0-9			-- Representación de los digitos entre 0 y 9
+$alpha = [a-zA-Z]		-- Representación de caracteres alfabeticos
 
+
+-- Mapeo de Expresion Regular a Tokens
 tokens :-
 
 \#.*	    ;
@@ -77,9 +87,16 @@ $white+     ;
 
 
 {
+{-|
+  'main' será el programa principal el cual procesa los argumentos recibidos
+  (desde la consola o archivo) para luego hacer el analisis lexicografico.
+  Si el flag -e esta presente entonces lo siguiente que se estaria analizando es una cadena de caracteres.
+  Si el flag -e esta ausente entonces se estaria analizando el contenido del archivo ingresado.
+-}
 main = do
 
   (x:[xs]) <- getArgs
+
   if x =="-e"
      then do
         let r = alexScanTokens_2 xs
@@ -91,12 +108,24 @@ main = do
        printList r
        hClose fp
 
+{-| 
+  @TkError@ corresponde a una tripleta estructurada por: 
+  El caracter no reconocido durante el analisis lexicografico.
+  El numero de la Linea y Columna donde se encuentra dicho caracter
+-}
 type TkError = (Char,Posicion,Posicion)
 
+{-|
+  @getRowCol@ extrae de AlexPosn la Linea y Columna donde esta ubicado el token hallado retornando una tupla con la respectiva coordenada.
+-}
 getRowCol :: AlexPosn -> (Posicion,Posicion)
 getRowCol (AlexPn offset row col) = (Linea row, Columna col)
 
-alexScanTokens_2 :: String -> ([Token], [TkError])                           
+{-|
+  @alexScanTokens_2@ es una modificacion de alexScanToken, tomado de %wrapper "posn", para el manejo de errores lexicograficos.
+-}
+alexScanTokens_2 :: String                -- ^ cadena de caracteres a analizar
+                 -> ([Token], [TkError])  -- ^ Tupla de listas de Token y TkError hallados
 alexScanTokens_2 str = go (alexStartPos,'\n',str)
   where 
     go inp@(pos,_,str) = case alexScan inp 0 of
@@ -105,23 +134,40 @@ alexScanTokens_2 str = go (alexStartPos,'\n',str)
       AlexSkip  inp' len     -> conc ([],[])(go inp')
       AlexToken inp' len act -> conc([act pos (take len str)],[]) (go inp')
 
-conc :: ([a],[b]) -> ([a],[b]) -> ([a],[b])
+{-|
+  @conc@ concatena las listas de dos tuplas
+-}
+conc :: ([a],[b]) -- ^ Primera tupla de listas
+     -> ([a],[b]) -- ^ Segunda tupla de listas
+     -> ([a],[b]) -- ^ Tupla con las listas concatenadas en sus repectivas posiciones
 conc x y = (fst x ++ fst y, snd x ++ snd y)
 
-printList :: ([Token],[TkError]) -> IO()
+{-|
+  @printList@ imprime en la salida estandar de los tokens, validos o invalidos pero no ambos.
+-}
+printList :: ([Token],[TkError]) -- ^ tupla con las listas de tokens reconocidos y caracteres no reconocidos. 
+          -> IO()                -- ^ Resultados obtenidos
 printList (x,y) = do
 	  case y of
 	       [] -> printToken x
 	       (y:ys)  -> printError (y:ys)
 	  	
-	  	  
-printToken :: [Token] -> IO() 
+
+{-| 
+  @printToken@ imprime en la salida estandar de la lista de tokens reconocidos.
+-}
+printToken :: [Token]   -- ^ Lista de Token renocidos
+           -> IO()      -- ^ Resultados obtenidos
 printToken [] = return ()
 printToken (x:xs) = do 
 	   print x
 	   printToken xs
 
-printError :: [TkError] -> IO()
+{-| 
+  @printError@ imprime en la salida estandar de la lista de caracteres no esperados.
+-}
+printError :: [TkError] -- ^ Lista de los caracteres no validos
+           -> IO()      -- ^ Resultados obtenidos
 printError [] = return ()
 printError ((char,row,col):listError) = do 
 	   putStr "ERROR: Caracter no esperado '"
