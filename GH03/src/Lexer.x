@@ -76,23 +76,50 @@ $white+     ;
 {
 main = do
   s <- getContents
-  let r = alexScanTokens s
-  printToken r
+  let r = alex_icografico s
+  printList r
 
-printToken :: [Token] -> IO()
+type TkError = (Char,Posicion,Posicion)
+
+alex_icografico :: String -> ([Token], [TkError])                           
+alex_icografico str = go (alexStartPos,'\n',str)
+  where 
+    go inp@(pos,_,str) = case alexScan inp 0 of
+      AlexEOF                -> ([],[])
+      AlexError inp'         -> conc ([],[(head str,fst (getRowCol pos), snd (getRowCol pos))]) (go (alexMove pos (head str), head str, tail str))
+      AlexSkip  inp' len     -> conc ([],[])(go inp')
+      AlexToken inp' len act -> conc([act pos (take len str)],[]) (go inp')
+
+conc :: ([a],[b]) -> ([a],[b]) -> ([a],[b])
+conc x y = (fst x ++ fst y, snd x ++ snd y)
+
+printList :: ([Token],[TkError]) -> IO()
+printList (x,y) = do
+	  case y of
+	       [] -> printToken x
+	       (y:ys)  -> printError (y:ys)
+	  	
+	  	  
+printToken :: [Token] -> IO() 
 printToken [] = return ()
-printToken (x:xs) = do
-	  print x
-	  printToken xs
+printToken (x:xs) = do 
+	   print x
+	   printToken xs
+
+printError :: [TkError] -> IO()
+printError [] = return ()
+printError ((char,row,col):listError) = do 
+	   putStr "ERROR: Caracter no esperado '"
+	   putChar char
+	   putStr "' en " 
+	   putStr (show row)
+	   putStr ", "
+	   putStr (show col) 
+	   putStr ".\n"
+	   printError listError
 
 getRowCol :: AlexPosn -> (Posicion,Posicion)
 getRowCol (AlexPn offset row col) = (Linea row, Columna col)
-
-getRow :: (Int,Int) -> Int
-getRow (l,c) = l
-
-getCol :: (Int,Int) -> Int
-getCol (l,c) = c
 
 getRowColFromToken :: Token -> (Int,Int)
 getRowColFromToken (TkDig s (Linea l, Columna c))  = (l,c)
