@@ -1,6 +1,9 @@
 {
 module Main (main) where
 import Token
+import System.IO
+import System.Environment
+
 }
 
 
@@ -20,7 +23,7 @@ tokens :-
 "range"	    {\p s -> TkRange (getRowCol p)}
 "eye"	    {\p s -> TkEye (getRowCol p)}
 "define"    {\p s -> TkDefine (getRowCol p)}
-"of"$white"type" {\p s -> TkOfType (getRowCol p)}
+"of"$white+"type" {\p s -> TkOfType (getRowCol p)}
 "as"	    {\p s -> TkAs (getRowCol p) }
 "begin"	    {\p s -> TkBegin (getRowCol p)}
 "end"	    {\p s -> TkEnd (getRowCol p)}
@@ -75,9 +78,12 @@ $white+     ;
 
 {
 main = do
-  s <- getContents
-  let r = alexScanTokens s
+  (x:xs) <- getArgs
+  fp <- openFile x ReadMode
+  content <- hGetContents fp
+  let r = alexScanTokens content
   printToken r
+  hClose fp
 
 --getRow :: (Int,Int) Maybe s -> Int
 --getRow ((i,j) Nothing) = i
