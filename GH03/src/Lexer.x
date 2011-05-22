@@ -83,7 +83,7 @@ main = do
   if x =="-e"
      then do
         let r = alexScanTokens_2 xs
-        printToken r
+        printList r
      else do
        fp <- openFile x ReadMode
        content <- hGetContents fp
@@ -92,6 +92,9 @@ main = do
        hClose fp
 
 type TkError = (Char,Posicion,Posicion)
+
+getRowCol :: AlexPosn -> (Posicion,Posicion)
+getRowCol (AlexPn offset row col) = (Linea row, Columna col)
 
 alexScanTokens_2 :: String -> ([Token], [TkError])                           
 alexScanTokens_2 str = go (alexStartPos,'\n',str)
@@ -130,7 +133,5 @@ printError ((char,row,col):listError) = do
 	   putStr ".\n"
 	   printError listError
 
-getRowCol :: AlexPosn -> (Posicion,Posicion)
-getRowCol (AlexPn offset row col) = (Linea row, Columna col)
 
 }
