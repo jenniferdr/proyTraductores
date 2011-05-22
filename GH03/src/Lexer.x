@@ -3,7 +3,9 @@ module Main (main) where
 import Token
 }
 
+
 %wrapper "posn"
+
 
 $digit = 0-9			-- digits
 $alpha = [a-zA-Z]		-- alphabetic characters
@@ -69,10 +71,12 @@ $white+     ;
 "<="   	    {\p s -> TkLte (getRowCol p)}
 ">="        {\p s -> TkGte (getRowCol p)}
 
+
 {
 main = do
   s <- getContents
   let r = alexScanTokens s
+
   printToken r
 
 getRowCol :: AlexPosn -> (Int,Int)
@@ -83,11 +87,4 @@ printToken [] = return ()
 printToken (x:xs) = do
 	  print x
 	  printToken xs
-
-getRow :: (Int,Int) -> Int
-getRow (row,col) = row
-
-getCol :: (Int,Int) -> Int
-getCol (row,col) = col
-
 }
