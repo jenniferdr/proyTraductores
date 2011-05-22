@@ -1,7 +1,4 @@
 {
-<<<<<<< HEAD
-module Main () where
-=======
 {- 
  /Analizador Lexicografico del Lenguaje Vectorinox/
  Grupo H03
@@ -11,7 +8,6 @@ module Main () where
 
 -- |Implementacion de los metodos usados para el analisis lexicografico
 module Main where
->>>>>>> c9bb12eb4c414d5213fe33e3be59a5331cd09f53
 import Token
 import System.IO
 import System.Environment
@@ -101,6 +97,12 @@ main = do
     x <- getArgs
     r <- checkArgs x
     printList r
+
+{-|
+  @checkArgs@ recibe la lista de argumentos tipeados por consola
+  Devuelve una tupla de long 2 con una lista de tokens encontrados
+  y una lista de TkError con caracteres no reconocidos
+-}
 
 checkArgs:: [String] -> IO (([Token],[TkError]))
 checkArgs x
