@@ -87,6 +87,9 @@ main = do
 
 type TkError = (Char,Posicion,Posicion)
 
+getRowCol :: AlexPosn -> (Posicion,Posicion)
+getRowCol (AlexPn offset row col) = (Linea row, Columna col)
+
 alexScanTokens_2 :: String -> ([Token], [TkError])                           
 alexScanTokens_2 str = go (alexStartPos,'\n',str)
   where 
@@ -124,7 +127,5 @@ printError ((char,row,col):listError) = do
 	   putStr ".\n"
 	   printError listError
 
-getRowCol :: AlexPosn -> (Posicion,Posicion)
-getRowCol (AlexPn offset row col) = (Linea row, Columna col)
 
 }
