@@ -1,0 +1,1265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Main</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Main.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Main</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Implementacion de los metodos usados para el analisis lexicografico
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AcheckArgs"
+>checkArgs</A
+> :: [String] -&gt; IO ([<A HREF="Token.html#t%3AToken"
+>Token</A
+>], [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>])</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ATkError"
+>TkError</A
+> = (Char, <A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>, <A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AgetRowCol"
+>getRowCol</A
+> :: <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+> -&gt; (<A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>, <A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AalexScanTokens_2"
+>alexScanTokens_2</A
+> :: String -&gt; ([<A HREF="Token.html#t%3AToken"
+>Token</A
+>], [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>])</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aconc"
+>conc</A
+> ::  ([a], [b]) -&gt; ([a], [b]) -&gt; ([a], [b])</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AprintList"
+>printList</A
+> :: ([<A HREF="Token.html#t%3AToken"
+>Token</A
+>], [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>]) -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AprintToken"
+>printToken</A
+> :: [<A HREF="Token.html#t%3AToken"
+>Token</A
+>] -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AprintError"
+>printError</A
+> :: [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>] -&gt; IO ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AAlexReturn"
+>AlexReturn</A
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3AAlexEOF"
+>AlexEOF</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexError"
+>AlexError</A
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexSkip"
+>AlexSkip</A
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexToken"
+>AlexToken</A
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int a</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AAlexLastAcc"
+>AlexLastAcc</A
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3AAlexNone"
+>AlexNone</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexLastAcc"
+>AlexLastAcc</A
+> a !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexLastSkip"
+>AlexLastSkip</A
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AAlexAcc"
+>AlexAcc</A
+> a user </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3AAlexAcc"
+>AlexAcc</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexAccSkip"
+>AlexAccSkip</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexAccPred"
+>AlexAccPred</A
+> a (<A HREF="Main.html#t%3AAlexAccPred"
+>AlexAccPred</A
+> user)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AAlexAccSkipPred"
+>AlexAccSkipPred</A
+> (<A HREF="Main.html#t%3AAlexAccPred"
+>AlexAccPred</A
+> user)</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AAlexAccPred"
+>AlexAccPred</A
+> user = user -&gt; <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Int -&gt; <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Bool</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AAlexInput"
+>AlexInput</A
+> = (<A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+>, Char, String)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AalexInputPrevChar"
+>alexInputPrevChar</A
+> :: <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Char</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AalexGetChar"
+>alexGetChar</A
+> :: <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Maybe (Char, <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AAlexPosn"
+>AlexPosn</A
+>  = <A HREF="#v%3AAlexPn"
+>AlexPn</A
+> !Int !Int !Int</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AalexStartPos"
+>alexStartPos</A
+> :: <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AalexMove"
+>alexMove</A
+> :: <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+> -&gt; Char -&gt; <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aalex_base"
+>alex_base</A
+> :: Array Int Int</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aalex_table"
+>alex_table</A
+> :: Array Int Int</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aalex_check"
+>alex_check</A
+> :: Array Int Int</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aalex_deflt"
+>alex_deflt</A
+> :: Array Int Int</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:checkArgs"
+><A NAME="v%3AcheckArgs"
+></A
+></A
+><B
+>checkArgs</B
+> :: [String] -&gt; IO ([<A HREF="Token.html#t%3AToken"
+>Token</A
+>], [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>])</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><TT
+>main</TT
+> ser el programa principal el cual procesa los argumentos recibidos
+  (desde la consola o archivo) para luego hacer el analisis lexicografico.
+  Si el flag -e esta presente entonces lo siguiente que se estaria analizando es una cadena de caracteres.
+  Si el flag -e esta ausente entonces se estaria analizando el contenido del archivo ingresado.
+</P
+><P
+><TT
+>checkArgs</TT
+> recibe la lista de argumentos tipeados por consola
+  Devuelve una tupla de long 2 con una lista de tokens encontrados
+  y una lista de TkError con caracteres no reconocidos
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:TkError"
+><A NAME="t%3ATkError"
+></A
+></A
+><B
+>TkError</B
+> = (Char, <A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>, <A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>TkError</TT
+> corresponde a una tripleta estructurada por: 
+  El caracter no reconocido durante el analisis lexicografico.
+  El numero de la Linea y Columna donde se encuentra dicho caracter
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:getRowCol"
+><A NAME="v%3AgetRowCol"
+></A
+></A
+><B
+>getRowCol</B
+> :: <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+> -&gt; (<A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>, <A HREF="Token.html#t%3APosicion"
+>Posicion</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>getRowCol</TT
+> extrae de AlexPosn la Linea y Columna donde esta ubicado el token hallado retornando una tupla con la respectiva coordenada.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alexScanTokens_2"
+><A NAME="v%3AalexScanTokens_2"
+></A
+></A
+><B
+>alexScanTokens_2</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: String</TD
+><TD CLASS="rdoc"
+>cadena de caracteres a analizar
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; ([<A HREF="Token.html#t%3AToken"
+>Token</A
+>], [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>])</TD
+><TD CLASS="rdoc"
+>Tupla de listas de Token y TkError hallados
+</TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+><TT
+>alexScanTokens_2</TT
+> es una modificacion de alexScanToken, tomado de %wrapper <A HREF="posn.html"
+>posn</A
+>, para el manejo de errores lexicograficos.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:conc"
+><A NAME="v%3Aconc"
+></A
+></A
+><B
+>conc</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: </TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+>=&gt; ([a], [b])</TD
+><TD CLASS="rdoc"
+>Segunda tupla de listas
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; ([a], [b])</TD
+><TD CLASS="rdoc"
+>Tupla con las listas concatenadas en sus repectivas posiciones
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; ([a], [b])</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+><TT
+>conc</TT
+> concatena las listas de dos tuplas
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:printList"
+><A NAME="v%3AprintList"
+></A
+></A
+><B
+>printList</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: ([<A HREF="Token.html#t%3AToken"
+>Token</A
+>], [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>])</TD
+><TD CLASS="rdoc"
+>tupla con las listas de tokens reconocidos y caracteres no reconocidos. 
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; IO ()</TD
+><TD CLASS="rdoc"
+>Resultados obtenidos
+</TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+><TT
+>printList</TT
+> imprime en la salida estandar de los tokens, validos o invalidos pero no ambos.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:printToken"
+><A NAME="v%3AprintToken"
+></A
+></A
+><B
+>printToken</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: [<A HREF="Token.html#t%3AToken"
+>Token</A
+>]</TD
+><TD CLASS="rdoc"
+>Lista de Token renocidos
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; IO ()</TD
+><TD CLASS="rdoc"
+>Resultados obtenidos
+</TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+><TT
+>printToken</TT
+> imprime en la salida estandar de la lista de tokens reconocidos.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:printError"
+><A NAME="v%3AprintError"
+></A
+></A
+><B
+>printError</B
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>:: [<A HREF="Main.html#t%3ATkError"
+>TkError</A
+>]</TD
+><TD CLASS="rdoc"
+>Lista de los caracteres no validos
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+>-&gt; IO ()</TD
+><TD CLASS="rdoc"
+>Resultados obtenidos
+</TD
+></TR
+><TR
+><TD CLASS="ndoc" COLSPAN="2"
+><TT
+>printError</TT
+> imprime en la salida estandar de la lista de caracteres no esperados.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:AlexReturn"
+><A NAME="t%3AAlexReturn"
+></A
+></A
+><B
+>AlexReturn</B
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexEOF"
+><A NAME="v%3AAlexEOF"
+></A
+></A
+><B
+>AlexEOF</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexError"
+><A NAME="v%3AAlexError"
+></A
+></A
+><B
+>AlexError</B
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexSkip"
+><A NAME="v%3AAlexSkip"
+></A
+></A
+><B
+>AlexSkip</B
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexToken"
+><A NAME="v%3AAlexToken"
+></A
+></A
+><B
+>AlexToken</B
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:AlexLastAcc"
+><A NAME="t%3AAlexLastAcc"
+></A
+></A
+><B
+>AlexLastAcc</B
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexNone"
+><A NAME="v%3AAlexNone"
+></A
+></A
+><B
+>AlexNone</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexLastAcc"
+><A NAME="v%3AAlexLastAcc"
+></A
+></A
+><B
+>AlexLastAcc</B
+> a !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexLastSkip"
+><A NAME="v%3AAlexLastSkip"
+></A
+></A
+><B
+>AlexLastSkip</B
+> !<A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> !Int</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:AlexAcc"
+><A NAME="t%3AAlexAcc"
+></A
+></A
+><B
+>AlexAcc</B
+> a user </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexAcc"
+><A NAME="v%3AAlexAcc"
+></A
+></A
+><B
+>AlexAcc</B
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexAccSkip"
+><A NAME="v%3AAlexAccSkip"
+></A
+></A
+><B
+>AlexAccSkip</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexAccPred"
+><A NAME="v%3AAlexAccPred"
+></A
+></A
+><B
+>AlexAccPred</B
+> a (<A HREF="Main.html#t%3AAlexAccPred"
+>AlexAccPred</A
+> user)</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexAccSkipPred"
+><A NAME="v%3AAlexAccSkipPred"
+></A
+></A
+><B
+>AlexAccSkipPred</B
+> (<A HREF="Main.html#t%3AAlexAccPred"
+>AlexAccPred</A
+> user)</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:AlexAccPred"
+><A NAME="t%3AAlexAccPred"
+></A
+></A
+><B
+>AlexAccPred</B
+> user = user -&gt; <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Int -&gt; <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Bool</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:AlexInput"
+><A NAME="t%3AAlexInput"
+></A
+></A
+><B
+>AlexInput</B
+> = (<A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+>, Char, String)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alexInputPrevChar"
+><A NAME="v%3AalexInputPrevChar"
+></A
+></A
+><B
+>alexInputPrevChar</B
+> :: <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Char</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alexGetChar"
+><A NAME="v%3AalexGetChar"
+></A
+></A
+><B
+>alexGetChar</B
+> :: <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+> -&gt; Maybe (Char, <A HREF="Main.html#t%3AAlexInput"
+>AlexInput</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:AlexPosn"
+><A NAME="t%3AAlexPosn"
+></A
+></A
+><B
+>AlexPosn</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:AlexPn"
+><A NAME="v%3AAlexPn"
+></A
+></A
+><B
+>AlexPn</B
+> !Int !Int !Int</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alexStartPos"
+><A NAME="v%3AalexStartPos"
+></A
+></A
+><B
+>alexStartPos</B
+> :: <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alexMove"
+><A NAME="v%3AalexMove"
+></A
+></A
+><B
+>alexMove</B
+> :: <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+> -&gt; Char -&gt; <A HREF="Main.html#t%3AAlexPosn"
+>AlexPosn</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alex_base"
+><A NAME="v%3Aalex_base"
+></A
+></A
+><B
+>alex_base</B
+> :: Array Int Int</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alex_table"
+><A NAME="v%3Aalex_table"
+></A
+></A
+><B
+>alex_table</B
+> :: Array Int Int</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alex_check"
+><A NAME="v%3Aalex_check"
+></A
+></A
+><B
+>alex_check</B
+> :: Array Int Int</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:alex_deflt"
+><A NAME="v%3Aalex_deflt"
+></A
+></A
+><B
+>alex_deflt</B
+> :: Array Int Int</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.6.0</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>
