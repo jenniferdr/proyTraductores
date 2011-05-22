@@ -12,6 +12,7 @@ $alpha = [a-zA-Z]		-- alphabetic characters
 
 tokens :-
 
+\#.*	    ;
 "num"  	    {\p s -> TkNum (getRowCol p)}
 "vec" 	    {\p s -> TkVec (getRowCol p)}
 "mat"	    {\p s -> TkMat (getRowCol p)}
@@ -36,10 +37,10 @@ tokens :-
 "return"    {\p s -> TkReturn (getRowCol p)}
 "true"	    {\p s -> TkTrue (getRowCol p)}	
 "false"	    {\p s -> TkFalse (getRowCol p)}
-\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig (getRowCol p) s} 
-$alpha[$alpha$digit\_]*  {\p s -> TkId (getRowCol p) s}
+\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig s (getRowCol p)} 
+$alpha[$alpha$digit\_]*  {\p s -> TkId s (getRowCol p)}
 $white+     ;
-\"[$digit$alpha$white]*\" | \'[$digit$alpha$white]*\' {\p s -> TkString (getRowCol p) s}
+\"$printable*\" | \'$printable*\' {\p s -> TkString (init (tail s))  (getRowCol p)}
 \+	    {\p s -> TkPlus (getRowCol p)}
 \-     	    {\p s -> TkMinus (getRowCol p)}
 \*\*	    {\p s -> TkPow (getRowCol p)}
@@ -54,7 +55,7 @@ $white+     ;
 "]"    	    {\p s -> TkRBrack (getRowCol p)}
 \$     	    {\p s -> TkRow (getRowCol p)}
 \@     	    {\p s -> TkCol (getRowCol p)}
-\'     	    {\p s -> TkSQuot (getRowCol p)}
+\'         {\p s -> TkSQuot (getRowCol p)}
 \"     	    {\p s -> TkDQuot (getRowCol p)}
 ":"    	    {\p s -> TkColon (getRowCol p)}
 ";"    	    {\p s -> TkSemiColon (getRowCol p)}
@@ -76,11 +77,15 @@ $white+     ;
 main = do
   s <- getContents
   let r = alexScanTokens s
-
   printToken r
 
-getRowCol :: AlexPosn -> (Int,Int)
-getRowCol (AlexPn offset row col) = (row,col)
+--getRow :: (Int,Int) Maybe s -> Int
+--getRow ((i,j) Nothing) = i
+--getRow ((i,j) Just s) = i
+
+
+getRowCol :: AlexPosn -> (Posicion,Posicion)
+getRowCol (AlexPn offset row col) = (Linea row,Columna col)
 
 printToken :: [Token] -> IO()
 printToken [] = return ()

@@ -1,61 +1,63 @@
-module Token (Token(..)) where
+module Token (Token(..),Posicion(..)) where
+
+data Posicion = Linea Int | Columna Int deriving (Eq,Show)
 
 data Token =
-     TkDig (Int,Int) String |
-     TkId (Int,Int) String  |
-     TkString (Int,Int) String |
-     TkPlus (Int,Int) |
-     TkMinus (Int,Int) |
-     TkPow (Int,Int) |
-     TkTimes (Int,Int) |
-     TkDiv (Int,Int) |
-     TkMod (Int,Int) |
-     TkLt (Int,Int) |
-     TkGt (Int,Int) |
-     TkEq (Int,Int) |
-     TkNot (Int,Int) |
-     TkLBrack (Int,Int) |
-     TkRBrack (Int,Int) |
-     TkRow (Int,Int) |
-     TkCol (Int,Int) |
-     TkSQuot (Int,Int) |
-     TkDQuot (Int,Int) |
-     TkColon (Int,Int) |
-     TkSemiColon (Int,Int) |
-     TkComma (Int,Int) |
-     TkDot (Int,Int) |
-     TkAnd (Int,Int) |
-     TkOr (Int,Int) |
-     TkLBrace (Int,Int) |
-     TkRBrace (Int,Int) |
-     TkLParen (Int,Int) |
-     TkRParen (Int,Int) |
-     TkNotEq (Int,Int) |
-     TkAsig (Int,Int) |
-     TkLte (Int,Int) |
-     TkGte (Int,Int) |
-     TkNum (Int,Int) |
-     TkVec (Int,Int) |
-     TkMat (Int,Int) |
-     TkZeroes (Int,Int) | 
-     TkRange (Int,Int) |
-     TkEye (Int,Int) |
-     TkDefine (Int,Int) |
-     TkOfType (Int,Int) | 
-     TkAs (Int,Int) |
-     TkBegin (Int,Int) |
-     TkEnd (Int,Int) |
-     TkVars (Int,Int) |
-     TkIf (Int,Int) |
-     TkThen (Int,Int) |
-     TkElse (Int,Int) |
-     TkWhile (Int,Int) |
-     TkDo (Int,Int) |
-     TkForEach (Int,Int) |
-     TkIn (Int,Int) |
-     TkRead (Int,Int) |
-     TkWrite (Int,Int) |
-     TkReturn (Int,Int) |
-     TkTrue (Int,Int) |
-     TkFalse (Int,Int)
+     TkDig String (Posicion,Posicion) |
+     TkId String (Posicion,Posicion) |
+     TkString String (Posicion,Posicion) |
+     TkPlus (Posicion,Posicion) |
+     TkMinus (Posicion,Posicion) |
+     TkPow (Posicion,Posicion) |
+     TkTimes (Posicion,Posicion) |
+     TkDiv (Posicion,Posicion) |
+     TkMod (Posicion,Posicion) |
+     TkLt (Posicion,Posicion) |
+     TkGt (Posicion,Posicion) |
+     TkEq (Posicion,Posicion) |
+     TkNot (Posicion,Posicion) |
+     TkLBrack (Posicion,Posicion) |
+     TkRBrack (Posicion,Posicion) |
+     TkRow (Posicion,Posicion) |
+     TkCol (Posicion,Posicion) |
+     TkSQuot (Posicion,Posicion) |
+     TkDQuot (Posicion,Posicion) |
+     TkColon (Posicion,Posicion) |
+     TkSemiColon (Posicion,Posicion) |
+     TkComma (Posicion,Posicion) |
+     TkDot (Posicion,Posicion) |
+     TkAnd (Posicion,Posicion) |
+     TkOr (Posicion,Posicion) |
+     TkLBrace (Posicion,Posicion) |
+     TkRBrace (Posicion,Posicion) |
+     TkLParen (Posicion,Posicion) |
+     TkRParen (Posicion,Posicion) |
+     TkNotEq (Posicion,Posicion) |
+     TkAsig (Posicion,Posicion) |
+     TkLte (Posicion,Posicion) |
+     TkGte (Posicion,Posicion) |
+     TkNum (Posicion,Posicion) |
+     TkVec (Posicion,Posicion) |
+     TkMat (Posicion,Posicion) |
+     TkZeroes (Posicion,Posicion) | 
+     TkRange (Posicion,Posicion) |
+     TkEye (Posicion,Posicion) |
+     TkDefine (Posicion,Posicion) |
+     TkOfType (Posicion,Posicion) | 
+     TkAs (Posicion,Posicion) |
+     TkBegin (Posicion,Posicion) |
+     TkEnd (Posicion,Posicion) |
+     TkVars (Posicion,Posicion) |
+     TkIf (Posicion,Posicion) |
+     TkThen (Posicion,Posicion) |
+     TkElse (Posicion,Posicion) |
+     TkWhile (Posicion,Posicion) |
+     TkDo (Posicion,Posicion) |
+     TkForEach (Posicion,Posicion) |
+     TkIn (Posicion,Posicion) |
+     TkRead (Posicion,Posicion) |
+     TkWrite (Posicion,Posicion) |
+     TkReturn (Posicion,Posicion) |
+     TkTrue (Posicion,Posicion) |
+     TkFalse (Posicion,Posicion)
      deriving (Eq,Show)
