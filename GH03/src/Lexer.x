@@ -37,8 +37,8 @@ tokens :-
 "return"    {\p s -> TkReturn (getRowCol p)}
 "true"	    {\p s -> TkTrue (getRowCol p)}	
 "false"	    {\p s -> TkFalse (getRowCol p)}
-\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig s (getRowCol p)} 
 $alpha[$alpha$digit\_]*  {\p s -> TkId s (getRowCol p)}
+\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig s (getRowCol p)} 
 $white+     ;
 \"$printable*\" | \'$printable*\' {\p s -> TkString (init (tail s))  (getRowCol p)}
 \+	    {\p s -> TkPlus (getRowCol p)}
@@ -79,17 +79,78 @@ main = do
   let r = alexScanTokens s
   printToken r
 
---getRow :: (Int,Int) Maybe s -> Int
---getRow ((i,j) Nothing) = i
---getRow ((i,j) Just s) = i
-
-
-getRowCol :: AlexPosn -> (Posicion,Posicion)
-getRowCol (AlexPn offset row col) = (Linea row,Columna col)
-
 printToken :: [Token] -> IO()
 printToken [] = return ()
 printToken (x:xs) = do
 	  print x
 	  printToken xs
+
+getRowCol :: AlexPosn -> (Posicion,Posicion)
+getRowCol (AlexPn offset row col) = (Linea row, Columna col)
+
+getRow :: (Int,Int) -> Int
+getRow (l,c) = l
+
+getCol :: (Int,Int) -> Int
+getCol (l,c) = c
+
+getRowColFromToken :: Token -> (Int,Int)
+getRowColFromToken (TkDig s (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkId s (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkString s (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkPlus (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkMinus (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkPow (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkTimes (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkDiv (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkMod (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkLt (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkGt (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkEq (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkNot (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkLBrack (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkRBrack (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkRow (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkCol (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkSQuot (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkDQuot (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkColon (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkSemiColon (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkComma (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkDot (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkAnd (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkOr (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkLBrace (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkRBrace (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkLParen (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkRParen (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkNotEq (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkAsig (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkLte (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkGte (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkNum (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkVec (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkMat (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkZeroes (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkRange (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkEye (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkDefine (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkOfType (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkAs (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkBegin (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkEnd (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkVars (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkIf (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkThen (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkElse (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkWhile (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkDo (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkForEach (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkIn (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkRead (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkWrite (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkReturn (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkTrue (Linea l, Columna c))  = (l,c)
+getRowColFromToken (TkFalse (Linea l, Columna c))  = (l,c)
+
 }
