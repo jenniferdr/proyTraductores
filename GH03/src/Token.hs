@@ -1,55 +1,61 @@
 module Token (Token(..)) where
 
 data Token =
-     TkPlus |
-     TkMinus |
-     TkTimes |
-     TkDiv |
-     TkMod |
-     TkLt |
-     TkGt |
-     TkEq |
-     TkNot |
-     TkLBrack |
-     TkRBrack |
-     TkRow |
-     TkCol |
-     TkSQuot |
-     TkDQuot |
-     TkColon |
-     TkSemiColon |
-     TkComma |
-     TkDot |
-     TkAnd |
-     TkOr |
-     TkLBrace |
-     TkRBrace |
-     TkLParen |
-     TkRParen |
-     TkNum |
-     TkVec |
-     TkMat |
-     TkZeroes | 
-     TkRange |
-     TkEye |
-     TkDefine |
-     TkOf |
-     TkType | 
-     TkAs |
-     TkBegin |
-     TkEnd |
-     TkVars |
-     TkVar |
-     TkIf |
-     TkThen |
-     TkElse |
-     TkWhile |
-     TkDo |
-     TkForEach |
-     TkIn |
-     TkRead |
-     TkWrite |
-     TkReturn |
-     TkTrue |
-     TkFalse
+     TkDig AlexPosn String |
+     TkId AlexPosn String  |
+     TkString AlexPosn String |
+     TkPlus AlexPosn |
+     TkMinus AlexPosn |
+     TkPow AlexPosn |
+     TkTimes AlexPosn |
+     TkDiv AlexPosn |
+     TkMod AlexPosn |
+     TkLt AlexPosn |
+     TkGt AlexPosn |
+     TkEq AlexPosn |
+     TkNot AlexPosn |
+     TkLBrack AlexPosn |
+     TkRBrack AlexPosn |
+     TkRow AlexPosn |
+     TkCol AlexPosn |
+     TkSQuot AlexPosn |
+     TkDQuot AlexPosn |
+     TkColon AlexPosn |
+     TkSemiColon AlexPosn |
+     TkComma AlexPosn |
+     TkDot AlexPosn |
+     TkAnd AlexPosn |
+     TkOr AlexPosn |
+     TkLBrace AlexPosn |
+     TkRBrace AlexPosn |
+     TkLParen AlexPosn |
+     TkRParen AlexPosn |
+     TkNotEq AlexPosn |
+     TkAsig AlexPosn |
+     TkLte AlexPosn |
+     TkGte AlexPosn |
+     TkNum AlexPosn |
+     TkVec AlexPosn |
+     TkMat AlexPosn |
+     TkZeroes AlexPosn | 
+     TkRange AlexPosn |
+     TkEye AlexPosn |
+     TkDefine AlexPosn |
+     TkOfType AlexPosn | 
+     TkAs AlexPosn |
+     TkBegin AlexPosn |
+     TkEnd AlexPosn |
+     TkVars AlexPosn |
+     TkIf AlexPosn |
+     TkThen AlexPosn |
+     TkElse AlexPosn |
+     TkWhile AlexPosn |
+     TkDo AlexPosn |
+     TkForEach AlexPosn |
+     TkIn AlexPosn |
+     TkRead AlexPosn |
+     TkWrite AlexPosn |
+     TkReturn AlexPosn |
+     TkTrue AlexPosn |
+     TkFalse AlexPosn
      deriving (Eq,Show)
