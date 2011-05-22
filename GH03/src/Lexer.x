@@ -10,64 +10,64 @@ $alpha = [a-zA-Z]		-- alphabetic characters
 
 tokens :-
 
-"num"  	    {\p s -> TkNum p}
-"vec" 	    {\p s -> TkVec p}
-"mat"	    {\p s -> TkMat p}
-"zeroes"    {\p s -> TkZeroes p}
-"range"	    {\p s -> TkRang pe}
-"eye"	    {\p s -> TkEye p}
-"define"    {\p s -> TkDefine p}
-"of"$white"type" {\p s -> TkOfType p}
-"as"	    {\p s -> TkAs p }
-"begin"	    {\p s -> TkBegin p}
-"end"	    {\p s -> TkEnd p}
-"vars"	    {\p s -> TkVars p}
-"if"	    {\p s -> TkIf p}
-"then"	    {\p s -> TkThen p}
-"else"	    {\p s -> TkElse p}
-"while"	    {\p s -> TkWhile p}
-"do"	    {\p s -> TkDo p }
-"foreach"   {\p s -> TkForEach p}
-"in"	    {\p s -> TkIn p}	
-"read"	    {\p s -> TkRead p}
-"write"	    {\p s -> TkWrite p}
-"return"    {\p s -> TkReturn p}
-"true"	    {\p s -> TkTrue p}	
-"false"	    {\p s -> TkFalse p}
-\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig p s} 
-$alpha[$alpha$digit\_]*  {\p s -> TkId p s}
+"num"  	    {\p s -> TkNum (getRowCol p)}
+"vec" 	    {\p s -> TkVec (getRowCol p)}
+"mat"	    {\p s -> TkMat (getRowCol p)}
+"zeroes"    {\p s -> TkZeroes (getRowCol p)}
+"range"	    {\p s -> TkRange (getRowCol p)}
+"eye"	    {\p s -> TkEye (getRowCol p)}
+"define"    {\p s -> TkDefine (getRowCol p)}
+"of"$white"type" {\p s -> TkOfType (getRowCol p)}
+"as"	    {\p s -> TkAs (getRowCol p) }
+"begin"	    {\p s -> TkBegin (getRowCol p)}
+"end"	    {\p s -> TkEnd (getRowCol p)}
+"vars"	    {\p s -> TkVars (getRowCol p)}
+"if"	    {\p s -> TkIf (getRowCol p)}
+"then"	    {\p s -> TkThen (getRowCol p)}
+"else"	    {\p s -> TkElse (getRowCol p)}
+"while"	    {\p s -> TkWhile (getRowCol p)}
+"do"	    {\p s -> TkDo (getRowCol p) }
+"foreach"   {\p s -> TkForEach (getRowCol p)}
+"in"	    {\p s -> TkIn (getRowCol p)}	
+"read"	    {\p s -> TkRead (getRowCol p)}
+"write"	    {\p s -> TkWrite (getRowCol p)}
+"return"    {\p s -> TkReturn (getRowCol p)}
+"true"	    {\p s -> TkTrue (getRowCol p)}	
+"false"	    {\p s -> TkFalse (getRowCol p)}
+\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig (getRowCol p) s} 
+$alpha[$alpha$digit\_]*  {\p s -> TkId (getRowCol p) s}
 $white+     ;
-\"[$digit$alpha$white]*\" | \'[$digit$alpha$white]*\' {\p s -> TkString p s}
-\+	    {\p s -> TkPlus p}
-\-     	    {\p s -> TkMinus p}
-\*\*	    {\p s -> TkPow p}
-\*     	    {\p s -> TkTimes p}
-\/     	    {\p s -> TkDiv p}
-"%"    	    {\p s -> TkMod p}
-"<"    	    {\p s -> TkLt p}
-">"    	    {\p s -> TkGt p}
-"="    	    {\p s -> TkEq p}
-"!"    	    {\p s -> TkNot p}
-"["    	    {\p s -> TkLBrack p}
-"]"    	    {\p s -> TkRBrack p}
-\$     	    {\p s -> TkRow p}
-\@     	    {\p s -> TkCol p}
-\'     	    {\p s -> TkSQuot p}
-\"     	    {\p s -> TkDQuot p}
-":"    	    {\p s -> TkColon p}
-";"    	    {\p s -> TkSemiColon p}
-","    	    {\p s -> TkComma p}
-\.	    {\p s -> TkDot p}
-"&&"   	    {\p s -> TkAnd p}
-\|\|   	    {\p s -> TkOr p}
-"{"    	    {\p s -> TkLBrace p}
-"}"    	    {\p s -> TkRBrace p}
-"("    	    {\p s -> TkLParen p}
-")"    	    {\p s -> TkRParen p}
-"!="	    {\p s -> TkNotEq p}
-":="	    {\p s -> TkAsig p}
-"<="   	    {\p s -> TkLte p}
-">="        {\p s -> TkGte p}
+\"[$digit$alpha$white]*\" | \'[$digit$alpha$white]*\' {\p s -> TkString (getRowCol p) s}
+\+	    {\p s -> TkPlus (getRowCol p)}
+\-     	    {\p s -> TkMinus (getRowCol p)}
+\*\*	    {\p s -> TkPow (getRowCol p)}
+\*     	    {\p s -> TkTimes (getRowCol p)}
+\/     	    {\p s -> TkDiv (getRowCol p)}
+"%"    	    {\p s -> TkMod (getRowCol p)}
+"<"    	    {\p s -> TkLt (getRowCol p)}
+">"    	    {\p s -> TkGt (getRowCol p)}
+"="    	    {\p s -> TkEq (getRowCol p)}
+"!"    	    {\p s -> TkNot (getRowCol p)}
+"["    	    {\p s -> TkLBrack (getRowCol p)}
+"]"    	    {\p s -> TkRBrack (getRowCol p)}
+\$     	    {\p s -> TkRow (getRowCol p)}
+\@     	    {\p s -> TkCol (getRowCol p)}
+\'     	    {\p s -> TkSQuot (getRowCol p)}
+\"     	    {\p s -> TkDQuot (getRowCol p)}
+":"    	    {\p s -> TkColon (getRowCol p)}
+";"    	    {\p s -> TkSemiColon (getRowCol p)}
+","    	    {\p s -> TkComma (getRowCol p)}
+\.	    {\p s -> TkDot (getRowCol p)}
+"&&"   	    {\p s -> TkAnd (getRowCol p)}
+\|\|   	    {\p s -> TkOr (getRowCol p)}
+"{"    	    {\p s -> TkLBrace (getRowCol p)}
+"}"    	    {\p s -> TkRBrace (getRowCol p)}
+"("    	    {\p s -> TkLParen (getRowCol p)}
+")"    	    {\p s -> TkRParen (getRowCol p)}
+"!="	    {\p s -> TkNotEq (getRowCol p)}
+":="	    {\p s -> TkAsig (getRowCol p)}
+"<="   	    {\p s -> TkLte (getRowCol p)}
+">="        {\p s -> TkGte (getRowCol p)}
 
 {
 main = do
@@ -75,19 +75,19 @@ main = do
   let r = alexScanTokens s
   printToken r
 
-
-getRow :: AlexPosn -> Int
-getRow AlexPn offset row col = row
-
-getCol :: AlexPosn -> Int
-getCol AlexPn offset row col = col
+getRowCol :: AlexPosn -> (Int,Int)
+getRowCol (AlexPn offset row col) = (row,col)
 
 printToken :: [Token] -> IO()
-printToken [x] = print x
+printToken [] = return ()
 printToken (x:xs) = do
 	  print x
 	  printToken xs
 
+getRow :: (Int,Int) -> Int
+getRow (row,col) = row
 
+getCol :: (Int,Int) -> Int
+getCol (row,col) = col
 
 }
