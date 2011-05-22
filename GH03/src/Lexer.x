@@ -89,7 +89,7 @@ checkArgs x
            fp <- openFile (head x) ReadMode
            content <- hGetContents fp
            return(alexScanTokens_2 content)
-   |otherwise= "Numero de argumentos invalido"        
+   |otherwise= error "Numero de argumentos invalido"        
 
 
 type TkError = (Char,Posicion,Posicion)
