@@ -61,7 +61,7 @@ $white+     ;
             {\p s -> TkString (init (tail s)) 
                                     (getRowCol p)}
 
-\+	    {\p s -> TkPlus (getRowCol p)}
+\+	        {\p s -> TkPlus (getRowCol p)}
 \-     	    {\p s -> TkMinus (getRowCol p)}
 \*\*	    {\p s -> TkPow (getRowCol p)}
 \*     	    {\p s -> TkTimes (getRowCol p)}
@@ -80,7 +80,7 @@ $white+     ;
 ":"    	    {\p s -> TkColon (getRowCol p)}
 ";"    	    {\p s -> TkSemiColon (getRowCol p)}
 ","    	    {\p s -> TkComma (getRowCol p)}
-\.	    {\p s -> TkDot (getRowCol p)}
+\.  	    {\p s -> TkDot (getRowCol p)}
 "&&"   	    {\p s -> TkAnd (getRowCol p)}
 \|\|   	    {\p s -> TkOr (getRowCol p)}
 "{"    	    {\p s -> TkLBrace (getRowCol p)}
@@ -123,7 +123,6 @@ checkArgs x
            content <- hGetContents fp
            return(alexScanTokens_2 content)
    |otherwise= error "Numero de argumentos invalido"        
-
 
 {-| 
   @TkError@ corresponde a una tripleta estructurada por: 

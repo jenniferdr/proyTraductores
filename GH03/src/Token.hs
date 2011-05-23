@@ -16,7 +16,7 @@ data Posicion
 
 data Token
     -- | Constructor para TkDig
-    = TkDig String (Posicion,Posicion)
+    = TkDig Double (Posicion,Posicion)
     -- | Constructor para TkId
     | TkId String (Posicion,Posicion)
     -- | Constructor para TkString
