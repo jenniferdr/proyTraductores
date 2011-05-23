@@ -17,7 +17,6 @@ import System.Environment
 
 %wrapper "posn"
 
-
 $digit = 0-9			-- Representación de los digitos entre 0 y 9
 $alpha = [a-zA-Z]		-- Representación de caracteres alfabeticos
 
@@ -25,7 +24,7 @@ $alpha = [a-zA-Z]		-- Representación de caracteres alfabeticos
 -- Mapeo de Expresion Regular a Tokens
 tokens :-
 
-\#.*	    ;
+\#.*\n	    ;
 "num"  	    {\p s -> TkNum (getRowCol p)}
 "vec" 	    {\p s -> TkVec (getRowCol p)}
 "mat"	    {\p s -> TkMat (getRowCol p)}
@@ -50,11 +49,19 @@ tokens :-
 "return"    {\p s -> TkReturn (getRowCol p)}
 "true"	    {\p s -> TkTrue (getRowCol p)}	
 "false"	    {\p s -> TkFalse (getRowCol p)}
-$alpha[$alpha$digit\_]*  {\p s -> TkId s (getRowCol p)}
-\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig s (getRowCol p)} 
+
+$alpha[$alpha$digit\_]* 
+              {\p s -> TkId s (getRowCol p)}
+
+\-?$digit$digit*\.?$digit* | \.?$digit$digit*  
+              {\p s -> TkDig s (getRowCol p)} 
 $white+     ;
-\"$printable*\" | \'$printable*\' {\p s -> TkString (init (tail s))  (getRowCol p)}
-\+	    {\p s -> TkPlus (getRowCol p)}
+
+\"$printable*\" | \'$printable*\'
+            {\p s -> TkString (init (tail s)) 
+                                    (getRowCol p)}
+
+\+	        {\p s -> TkPlus (getRowCol p)}
 \-     	    {\p s -> TkMinus (getRowCol p)}
 \*\*	    {\p s -> TkPow (getRowCol p)}
 \*     	    {\p s -> TkTimes (getRowCol p)}
@@ -88,10 +95,12 @@ $white+     ;
 
 {
 {-|
-  'main' será el programa principal el cual procesa los argumentos recibidos
-  (desde la consola o archivo) para luego hacer el analisis lexicografico.
-  Si el flag -e esta presente entonces lo siguiente que se estaria analizando es una cadena de caracteres.
-  Si el flag -e esta ausente entonces se estaria analizando el contenido del archivo ingresado.
+  'main' será el programa principal el cual procesa los argumentos
+   recibidos  (desde la  consola o archivo)  para luego  hacer  el
+   analisis lexicografico. Si el flag -e esta presente entonces lo
+   siguiente que se estaria analizando es una cadena de caracteres.
+   Si el flag -e esta ausente entonces se estaria analizando el
+   contenido del archivo ingresado.
 -}
 main = do
     x <- getArgs
@@ -99,12 +108,14 @@ main = do
     printList r
 
 {-|
-  @checkArgs@ recibe la lista de argumentos tipeados por consola
+  @checkArgs@ recibe la  lista de argumentos  tipeados por consola
   Devuelve una tupla de long 2 con una lista de tokens encontrados
-  y una lista de TkError con caracteres no reconocidos
+  en  el  archivo o String  esrito  en la linea de comandos, y una 
+  lista de TkError con caracteres no reconocidos.
 -}
 
-checkArgs:: [String] -> IO (([Token],[TkError]))
+checkArgs:: [String]                    -- ^ Lista de argumentos 
+            -> IO (([Token],[TkError])) -- ^ tupla de lista de tokens y TkError
 checkArgs x
    |length x==2 && (head x)=="-e" = do return(alexScanTokens_2 (last x))
    |length x==1 = do 
@@ -122,13 +133,15 @@ checkArgs x
 type TkError = (Char,Posicion,Posicion)
 
 {-|
-  @getRowCol@ extrae de AlexPosn la Linea y Columna donde esta ubicado el token hallado retornando una tupla con la respectiva coordenada.
+  @getRowCol@ extrae de AlexPosn la Linea y Columna donde esta ubicado el
+  token hallado retornando una tupla con la respectiva coordenada.
 -}
 getRowCol :: AlexPosn -> (Posicion,Posicion)
 getRowCol (AlexPn offset row col) = (Linea row, Columna col)
 
 {-|
-  @alexScanTokens_2@ es una modificacion de alexScanToken, tomado de %wrapper "posn", para el manejo de errores lexicograficos.
+  @alexScanTokens_2@ es una modificacion de alexScanToken, tomado de %wrapper
+  "posn", para el manejo de errores lexicograficos.
 -}
 alexScanTokens_2 :: String                -- ^ cadena de caracteres a analizar
                  -> ([Token], [TkError])  -- ^ Tupla de listas de Token y TkError hallados
