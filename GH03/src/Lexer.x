@@ -51,7 +51,7 @@ tokens :-
 "true"	    {\p s -> TkTrue (getRowCol p)}	
 "false"	    {\p s -> TkFalse (getRowCol p)}
 $alpha[$alpha$digit\_]*  {\p s -> TkId s (getRowCol p)}
-\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig s (getRowCol p)} 
+\-?$digit$digit*\.?$digit* | \.?$digit$digit*    {\p s -> TkDig (stringToDouble s)(getRowCol p)} 
 $white+     ;
 \"$printable*\" | \'$printable*\' {\p s -> TkString (init (tail s))  (getRowCol p)}
 \+	    {\p s -> TkPlus (getRowCol p)}
@@ -103,8 +103,8 @@ main = do
   Devuelve una tupla de long 2 con una lista de tokens encontrados
   y una lista de TkError con caracteres no reconocidos
 -}
-
-checkArgs:: [String] -> IO (([Token],[TkError]))
+checkArgs:: [String]                   -- ^ Argumentos recibidos por consola
+         -> IO (([Token],[TkError]))   -- ^ Listas con el resultado del analisis lexicografico
 checkArgs x
    |length x==2 && (head x)=="-e" = do return(alexScanTokens_2 (last x))
    |length x==1 = do 
@@ -122,10 +122,21 @@ checkArgs x
 type TkError = (Char,Posicion,Posicion)
 
 {-|
-  @getRowCol@ extrae de AlexPosn la Linea y Columna donde esta ubicado el token hallado retornando una tupla con la respectiva coordenada.
+  @getRowCol@ extrae de AlexPosn la Linea y Columna donde esta ubicado el token reconocido retornando una tupla con la respectiva coordenada.
 -}
-getRowCol :: AlexPosn -> (Posicion,Posicion)
+getRowCol :: AlexPosn            -- ^ Valor AlexPosn correspondiente al token reconocido
+          -> (Posicion,Posicion) -- ^ Coordenadas (Fila,Columna) del token reconocido
 getRowCol (AlexPn offset row col) = (Linea row, Columna col)
+
+{-|
+  @stringToDouble@ convierte un String en un numero double.
+-}
+stringToDouble :: String -- ^ String a convertir
+               -> Double -- ^ Casteo del String a Double
+stringToDouble s
+   |head s == '.' = read (['0'] ++ s)::Double
+   |last s == '.' = read (s ++ ['0'])::Double
+   |otherwise = read s::Double
 
 {-|
   @alexScanTokens_2@ es una modificacion de alexScanToken, tomado de %wrapper "posn", para el manejo de errores lexicograficos.
