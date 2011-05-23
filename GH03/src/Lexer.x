@@ -128,7 +128,8 @@ checkArgs x
 type TkError = (Char,Posicion,Posicion)
 
 {-|
-  @getRowCol@ extrae de AlexPosn la Linea y Columna donde esta ubicado el token reconocido retornando una tupla con la respectiva coordenada.
+  @getRowCol@ extrae de AlexPosn la Linea y Columna donde esta ubicado el token reconocido
+  retornando una tupla con la respectiva coordenada.
 -}
 getRowCol :: AlexPosn            -- ^ Valor AlexPosn correspondiente al token reconocido
           -> (Posicion,Posicion) -- ^ Coordenadas (Fila,Columna) del token reconocido
@@ -154,7 +155,8 @@ alexScanTokens_2 str = go (alexStartPos,'\n',str)
   where 
     go inp@(pos,_,str) = case alexScan inp 0 of
       AlexEOF                -> ([],[])
-      AlexError inp'         -> conc ([],[(head str,fst (getRowCol pos), snd (getRowCol pos))]) (go (alexMove pos (head str), head str, tail str))
+      AlexError inp'         -> conc ([],[(head str,fst (getRowCol pos), snd (getRowCol pos))]) 
+                                                (go (alexMove pos (head str), head str, tail str))
       AlexSkip  inp' len     -> conc ([],[])(go inp')
       AlexToken inp' len act -> conc([act pos (take len str)],[]) (go inp')
 
